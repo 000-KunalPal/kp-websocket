@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server</title>
+  </head>
+  <body>
+    <h1>Websocket Client</h1>
+    <button id="connect">Connect to Websocket</button>
+    <button id="send">Send Message</button>
+    <p id="status">Status: Disconnected</p>
+    <p id="messages">Message:</p>
+  </body>
+  <script>
+    let socket;
+    document.getElementById("connect").addEventListener("click", () => {
+      socket = new WebSocket("ws://localhost:8000");
+      socket.addEventListener("open", () => {
+        document.getElementById("status").textContent = "Status: Connected";
+        document.getElementById("send").disabled = false;
+      });
+      socket.addEventListener("message", (event) => {
+        document.getElementById(
+          "messages"
+        ).textContent = `Message: ${event.data}`;
+      });
+      socket.addEventListener("close", () => {
+        document.getElementById("status").textContent = "Status: Disconnected";
+        document.getElementById("send").disabled = true;
+      });
+      document.getElementById("send").addEventListener("click", () => {
+        socket.send("ping");
+      });
+    });
+  </script>
+</html>
