@@ -1,3 +1,7 @@
+/**
+ * Minimal implementaion of websockeet server
+ */
+
 // Store active connections and user data
 interface UserData {
   username: string;
@@ -6,15 +10,6 @@ interface UserData {
 
 const connections: Map<string, WebSocket> = new Map();
 const users: Map<string, UserData> = new Map();
-
-// // Broadcast message to all connected clients except sender
-// function broadcast(message: string, excludeSocket?: WebSocket) {
-//   for (const [_, socket] of connections.entries()) {
-//     if (socket !== excludeSocket && socket.readyState === WebSocket.OPEN) {
-//       socket.send(message);
-//     }
-//   }
-// }
 
 // Broadcast message to all connected clients including sender
 function broadcast(message: string) {
@@ -54,8 +49,6 @@ Deno.serve((req) => {
         userId: id,
         username: username || "Anonymous",
       })
-      // Broadcast message to all connected clients except sender
-      // socket
     );
   });
 
@@ -88,8 +81,6 @@ Deno.serve((req) => {
               username: userData.username,
               position: userData.cursorPosition,
             })
-            // Broadcast message to all connected clients except sender
-            // socket
           );
         }
       }
